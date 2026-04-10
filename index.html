@@ -1,9 +1,31 @@
-<h2>先生投票（上位3人を選択）</h2>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>先生投票システム（ポイント配分）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<div id="list"></div>
+<div class="container">
+    <header>
+        <h1>先生投票（累積投票）</h1>
+        <p class="subtitle">合計10ポイントを自由に配分してください。</p>
+        <div class="points-status">
+            <span class="label">持ち点:</span> <span class="total-points">10</span> pt
+            <span class="label">残り:</span> <span id="remaining-points" class="remaining-points">10</span> pt
+        </div>
+    </header>
 
-<p>選択中: <span id="selected"></span></p>
+    <main id="vote-container">
+        </main>
+    
+    <div id="status-message"></div>
+    <button id="submit-btn" class="submit-btn" onclick="submitVote()" disabled>投票する</button>
 
-<button onclick="submitVote()">投票</button>
+</div>
 
 <script src="script.js"></script>
+</body>
+</html>
