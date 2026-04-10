@@ -1,0 +1,206 @@
+:root {
+    --primary-color: #3f51b5; /* ベースの青 */
+    --accent-color: #ff9800; /* 残りポイントのオレンジ */
+    --bg-color: #f4f7f6;
+    --card-bg: #fff;
+    --text-color: #333;
+    --plus-btn-color: #4caf50; /* ＋ボタンの緑 */
+    --minus-btn-color: #f44336; /* －ボタンの赤 */
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0;
+}
+
+.points-status {
+    background-color: var(--card-bg);
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: inline-flex;
+    gap: 10px;
+    font-size: 1.2rem;
+    margin-top: 15px;
+}
+
+.total-points {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.remaining-points {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+#vote-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.teacher-card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 15px;
+    align-items: center;
+}
+
+.teacher-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.teacher-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* 視覚化バーのスタイル */
+.bar-background {
+    background-color: #e0e0e0;
+    height: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.bar-fill {
+    background-color: var(--primary-color);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 8px;
+}
+
+.point-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.point-display {
+    font-size: 2rem;
+    font-weight: bold;
+    width: 45px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.adjust-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.adjust-btn:active {
+    transform: scale(0.95);
+}
+
+.plus-btn {
+    background-color: var(--plus-btn-color);
+    box-shadow: 0 4px #2e7d32;
+}
+
+.plus-btn:hover {
+    background-color: #43a047;
+}
+
+.minus-btn {
+    background-color: var(--minus-btn-color);
+    box-shadow: 0 4px #c62828;
+}
+
+.minus-btn:hover {
+    background-color: #e53935;
+}
+
+.adjust-btn:disabled {
+    background-color: #ccc;
+    box-shadow: 0 4px #999;
+    cursor: not-allowed;
+    transform: translateY(2px);
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 30px auto;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--primary-color);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px #283593;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #303f9f;
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px #283593;
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    box-shadow: 0 4px #999;
+    cursor: not-allowed;
+}
+
+.error-message {
+    text-align: center;
+    color: var(--minus-btn-color);
+    margin-top: -15px;
+    font-weight: bold;
+}
