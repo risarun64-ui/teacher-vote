@@ -1,206 +1,278 @@
 :root {
-    --primary-color: #3f51b5; /* ベースの青 */
-    --accent-color: #ff9800; /* 残りポイントのオレンジ */
-    --bg-color: #f4f7f6;
-    --card-bg: #fff;
-    --text-color: #333;
-    --plus-btn-color: #4caf50; /* ＋ボタンの緑 */
-    --minus-btn-color: #f44336; /* －ボタンの赤 */
-    --border-radius: 12px;
+  --primary-color: #3f51b5;
+  --accent-color: #ff9800;
+  --bg-color: #f4f7f6;
+  --card-bg: #fff;
+  --text-color: #333;
+  --plus-btn-color: #4caf50;
+  --minus-btn-color: #f44336;
+  --border-radius: 12px;
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0; /* 全体余白を消してヘッダーを画面幅いっぱいに */
 }
 
 .container {
-    max-width: 600px;
-    width: 100%;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 100px; /* 下部ボタン用の余白 */
 }
 
+/* スクロールしても上部に固定されるヘッダー */
 header {
-    text-align: center;
-    margin-bottom: 30px;
+  position: sticky;
+  top: 0;
+  background: rgba(244, 247, 246, 0.95); /* 背景を少し透過 */
+  backdrop-filter: blur(5px); /* すりガラス効果 */
+  text-align: center;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  z-index: 100;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 h1 {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: 5px;
+  font-size: 1.5rem; /* スマホ向けに少し縮小 */
+  color: var(--primary-color);
+  margin: 0 0 5px 0;
 }
 
 .subtitle {
-    font-size: 1rem;
-    color: #666;
-    margin-top: 0;
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 0 10px 0;
 }
 
 .points-status {
-    background-color: var(--card-bg);
-    padding: 15px 25px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display: inline-flex;
-    gap: 10px;
-    font-size: 1.2rem;
-    margin-top: 15px;
+  background-color: var(--card-bg);
+  padding: 10px 20px;
+  border-radius: 30px; /* 丸みを持たせてバッジ風に */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  gap: 15px;
+  font-size: 1.1rem;
 }
 
 .total-points {
-    font-weight: bold;
-    color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
 }
-
 .remaining-points {
-    font-weight: bold;
-    color: var(--accent-color);
+  color: var(--accent-color);
+  font-weight: bold;
+  font-size: 1.3rem;
 }
 
 #vote-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 15px;
 }
 
+/* カードをコンパクト化して一覧性を向上 */
 .teacher-card {
-    background-color: var(--card-bg);
-    padding: 20px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 15px;
-    align-items: center;
+  background-color: var(--card-bg);
+  padding: 12px 15px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
 }
 
 .teacher-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .teacher-name {
-    font-size: 1.2rem;
-    font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-/* 視覚化バーのスタイル */
 .bar-background {
-    background-color: #e0e0e0;
-    height: 12px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
+  background-color: #e0e0e0;
+  height: 8px; /* 少し細く */
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
 }
 
 .bar-fill {
-    background-color: var(--primary-color);
-    height: 100%;
-    width: 0%;
-    transition: width 0.3s ease;
-    border-radius: 8px;
+  background-color: var(--primary-color);
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
 }
 
 .point-controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .point-display {
-    font-size: 2rem;
-    font-weight: bold;
-    width: 45px;
-    text-align: center;
-    color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+  color: var(--primary-color);
 }
 
+/* スマホで押しやすく、かつ邪魔にならないサイズ（44px） */
 .adjust-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    border: none;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px rgba(0, 0, 0, 0.2);
 }
 
 .adjust-btn:active {
-    transform: scale(0.95);
+  transform: scale(0.95);
+  box-shadow: 0 1px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
 }
-
 .plus-btn {
-    background-color: var(--plus-btn-color);
-    box-shadow: 0 4px #2e7d32;
+  background-color: var(--plus-btn-color);
 }
-
-.plus-btn:hover {
-    background-color: #43a047;
-}
-
 .minus-btn {
-    background-color: var(--minus-btn-color);
-    box-shadow: 0 4px #c62828;
+  background-color: var(--minus-btn-color);
 }
-
-.minus-btn:hover {
-    background-color: #e53935;
-}
-
 .adjust-btn:disabled {
-    background-color: #ccc;
-    box-shadow: 0 4px #999;
-    cursor: not-allowed;
-    transform: translateY(2px);
+  background-color: #ccc;
+  box-shadow: 0 3px #999;
+  cursor: not-allowed;
+}
+
+/* エラーメッセージ */
+#status-message {
+  text-align: center;
+  margin-top: 20px;
+}
+.error-message {
+  color: var(--minus-btn-color);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* 下部に固定される投票ボタンエリア */
+.submit-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .submit-btn {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin: 30px auto;
-    padding: 15px;
-    border-radius: var(--border-radius);
-    border: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #fff;
-    background-color: var(--primary-color);
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px #283593;
+  width: 100%;
+  max-width: 400px;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* 浮いている感を強調 */
 }
 
 .submit-btn:hover:not(:disabled) {
-    background-color: #303f9f;
+  background-color: #303f9f;
 }
-
-.submit-btn:active:not(:disabled) {
-    transform: translateY(2px);
-    box-shadow: 0 2px #283593;
-}
-
 .submit-btn:disabled {
-    background-color: #ccc;
-    box-shadow: 0 4px #999;
-    cursor: not-allowed;
+  background-color: #999;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
 }
 
-.error-message {
-    text-align: center;
-    color: var(--minus-btn-color);
-    margin-top: -15px;
-    font-weight: bold;
+/* 完了画面のオーバーレイ（変更なし） */
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(63, 81, 181, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease;
+  color: white;
+  text-align: center;
+}
+.success-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+.success-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+.success-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: bounce 1s infinite;
+}
+.close-btn {
+  margin-top: 30px;
+  padding: 12px 40px;
+  border-radius: 30px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.close-btn:hover {
+  background: white;
+  color: var(--primary-color);
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
