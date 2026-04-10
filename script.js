@@ -1,126 +1,147 @@
-const teacherList = ["田中先生", "山本先生", "佐藤先生", "鈴木先生", "高橋先生"];
-const TOTAL_POINTS = 10;
-let currentPointsAllocation = {};
-let currentTotal = 0;
+// リストは五十音順のまま
+const teacherList = [
+  "相田先生",
+  "安藤先生",
+  "井田先生",
+  "梅津先生",
+  "太田先生",
+  "岡本先生",
+  "奥田先生",
+  "尾上先生",
+  "勝野先生",
+  "近藤先生",
+  "小林(大)先生",
+  "佐藤先生",
+  "高田先生",
+  "千脇先生",
+  "戸塚先生",
+  "長谷田先生",
+  "濱田先生",
+  "播磨先生",
+  "東田先生",
+  "平岡先生",
+  "廣岡先生",
+  "福田先生",
+  "正井先生",
+  "宮岡先生",
+  "村中先生",
+  "森元先生",
+  "山口先生",
+  "山田(竜)先生",
+  "安永先生",
+  "吉本先生",
+];
 
-// 初期化：各先生のポイントを0に
-teacherList.forEach(name => {
-    currentPointsAllocation[name] = 0;
-});
+const TOTAL_POINTS = 10;
+// 各先生のポイントを配列で管理（初期値0を30人分）
+let currentPointsAllocation = new Array(teacherList.length).fill(0);
+let currentTotal = 0;
 
 const voteContainer = document.getElementById("vote-container");
 const remainingDisplay = document.getElementById("remaining-points");
 const submitBtn = document.getElementById("submit-btn");
 const statusDisplay = document.getElementById("status-message");
 
-// 初期表示の生成（投票カード）
 function init() {
-    teacherList.forEach((name) => {
-        const card = document.createElement("div");
-        card.className = "teacher-card";
-        card.innerHTML = `
+  teacherList.forEach((name, index) => {
+    const card = document.createElement("div");
+    card.className = "teacher-card";
+    // ボタンの引数を index (0, 1, 2...) に変更
+    card.innerHTML = `
             <div class="teacher-info">
                 <span class="teacher-name">${name}</span>
                 <div class="bar-background">
-                    <div class="bar-fill" id="bar-fill-${name}" style="width: 0%"></div>
+                    <div class="bar-fill" id="bar-fill-${index}" style="width: 0%"></div>
                 </div>
             </div>
             <div class="point-controls">
-                <button class="adjust-btn minus-btn" onclick="adjustPoints('${name}', -1)">－</button>
-                <span class="point-display" id="points-${name}">0</span>
-                <button class="adjust-btn plus-btn" id="plus-${name}" onclick="adjustPoints('${name}', 1)">＋</button>
+                <button class="adjust-btn minus-btn" onclick="adjustPoints(${index}, -1)">－</button>
+                <span class="point-display" id="points-${index}">0</span>
+                <button class="adjust-btn plus-btn" id="plus-${index}" onclick="adjustPoints(${index}, 1)">＋</button>
             </div>
         `;
-        voteContainer.appendChild(card);
-    });
-    updateUI();
+    voteContainer.appendChild(card);
+  });
+  updateUI();
 }
 
-// ポイント調整ロジック
-function adjustPoints(name, amount) {
-    let newAllocation = currentPointsAllocation[name] + amount;
+function adjustPoints(index, amount) {
+  let newAllocation = currentPointsAllocation[index] + amount;
 
-    // バリデーション: 0未満にはできない
-    if (newAllocation < 0) return;
-    
-    // バリデーション: プラスする場合、残りポイントがないとダメ
-    if (amount > 0 && currentTotal >= TOTAL_POINTS) return;
+  if (newAllocation < 0) return;
+  if (amount > 0 && currentTotal >= TOTAL_POINTS) return;
 
-    currentPointsAllocation[name] = newAllocation;
-    updateUI();
+  currentPointsAllocation[index] = newAllocation;
+  updateUI();
 }
 
-// UI（数値、バー、ボタンの状態）をリアルタイムに更新
 function updateUI() {
-    currentTotal = 0;
-    
-    teacherList.forEach(name => {
-        const points = currentPointsAllocation[name];
-        currentTotal += points;
-        
-        // 1. カード内の数値更新
-        document.getElementById(`points-${name}`).textContent = points;
-        
-        // 2. プログレスバーの更新（視覚化）
-        const barFill = document.getElementById(`bar-fill-${name}`);
-        const percentage = (points / TOTAL_POINTS) * 100;
-        barFill.style.width = `${percentage}%`;
-        
-        // 3. －ボタンの無効化制御（0ptの場合）
-        const minusBtn = document.querySelector(`#points-${name} ~ .minus-btn`);
-        // HTML構造上、adjustPointsを直接呼んでいるのでJSでの無効化は不要だが、
-        // 見た目のためにCSSの :disabled は調整済み。ロジック上はadjustPointsで弾く。
-    });
+  currentTotal = currentPointsAllocation.reduce((a, b) => a + b, 0);
 
-    // 4. 残りポイントの更新
-    const remaining = TOTAL_POINTS - currentTotal;
-    remainingDisplay.textContent = remaining;
+  currentPointsAllocation.forEach((points, index) => {
+    document.getElementById(`points-${index}`).textContent = points;
+    const barFill = document.getElementById(`bar-fill-${index}`);
+    const percentage = (points / TOTAL_POINTS) * 100;
+    barFill.style.width = `${percentage}%`;
+  });
 
-    // 5. ＋ボタンの無効化制御（残り0ptの場合、すべての先生の＋ボタンを無効化）
-    const plusButtons = document.querySelectorAll('.plus-btn');
-    if (remaining === 0) {
-        plusButtons.forEach(btn => btn.disabled = true);
-    } else {
-        plusButtons.forEach(btn => btn.disabled = false);
-    }
+  const remaining = TOTAL_POINTS - currentTotal;
+  remainingDisplay.textContent = remaining;
 
-    // 6. 送信ボタンの制御: 合計がちょうどTOTAL_POINTSなら有効
-    if (currentTotal === TOTAL_POINTS) {
-        submitBtn.disabled = false;
-        statusDisplay.innerHTML = "";
-    } else {
-        submitBtn.disabled = true;
-        statusDisplay.innerHTML = `<p class="error-message">合計をちょうど${TOTAL_POINTS}ポイントにしてください。（現在: ${currentTotal}pt）</p>`;
-    }
+  const plusButtons = document.querySelectorAll(".plus-btn");
+  plusButtons.forEach((btn) => (btn.disabled = remaining === 0));
+
+  if (currentTotal === TOTAL_POINTS) {
+    submitBtn.disabled = false;
+    statusDisplay.innerHTML = "";
+  } else {
+    submitBtn.disabled = true;
+    statusDisplay.innerHTML = `<p class="error-message">あと ${remaining} ポイント配分してください。</p>`;
+  }
 }
 
-// 投票送信
 function submitVote() {
-    const url = "https://script.google.com/macros/s/AKfycbz3Q6wJYhEJRJOy7_DxjZ8ebmWP1_GpK9Yb24MrfQCG7tmkeMgqav93j8WlN1cOf1Z-/exec";
+  const url =
+    "https://script.google.com/macros/s/AKfycbw6NRLle2i3kczVoP0VUoIUoGD2qcuyz57Npvrio9o6u8Rz5uuV3IGC155eGQYhWP8f/exec";
 
-    // 送信ボタンを無効化（二重送信防止）
-    submitBtn.disabled = true;
-    submitBtn.textContent = "送信中...";
+  // 送信用データを作成（{ "相田先生": 2, ... } の形式に戻す）
+  const postData = {};
+  teacherList.forEach((name, index) => {
+    postData[name] = currentPointsAllocation[index];
+  });
 
-    fetch(url, {
-        method: "POST",
-        mode: "no-cors", 
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentPointsAllocation),
-    })
+  submitBtn.disabled = true;
+  submitBtn.textContent = "送信中...";
+
+  fetch(url, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(postData),
+  })
     .then(() => {
-        alert("投票が完了しました！");
-        // フォームのリセット
-        teacherList.forEach(name => currentPointsAllocation[name] = 0);
-        updateUI();
+      showSuccessAnimation();
+      currentPointsAllocation.fill(0);
+      updateUI();
     })
     .catch((err) => {
-        alert("エラーが発生しました");
-        console.error(err);
-        submitBtn.disabled = false;
-        submitBtn.textContent = "投票する";
+      alert("エラーが発生しました");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "投票する";
     });
 }
 
-// 初期化実行
+function showSuccessAnimation() {
+  const overlay = document.createElement("div");
+  overlay.className = "success-overlay";
+  overlay.innerHTML = `
+        <div class="success-content">
+            <div class="success-icon">✨</div>
+            <h2>投票完了！</h2>
+            <p>ご協力ありがとうございました！</p>
+            <button onclick="location.reload()" class="close-btn">戻る</button>
+        </div>
+    `;
+  document.body.appendChild(overlay);
+}
+
 init();
