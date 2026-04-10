@@ -1,55 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>先生投票</title>
+<h2>先生投票（上位3人を選択）</h2>
 
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f5f7fb;
-      text-align: center;
-      padding: 20px;
-    }
+<div id="list"></div>
 
-    .card {
-      background: white;
-      margin: 10px auto;
-      padding: 15px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    input[type="range"] {
-      width: 100%;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #4a90e2;
-      color: white;
-      font-size: 16px;
-    }
-  </style>
-</head>
-
-<body>
-
-<h2>先生投票（合計10ポイント）</h2>
-
-<div id="teachers"></div>
-
-<p>残りポイント: <span id="remaining">10</span></p>
+<p>選択中: <span id="selected"></span></p>
 
 <button onclick="submitVote()">投票</button>
 
 <script src="script.js"></script>
-
-</body>
-</html>
