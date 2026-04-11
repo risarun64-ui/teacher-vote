@@ -1,40 +1,42 @@
-// リストは五十音順のまま
-const teacherList = [
-  "相田先生",
-  "安藤先生",
-  "井田先生",
-  "梅津先生",
-  "太田先生",
-  "岡本先生",
-  "奥田先生",
-  "尾上先生",
-  "勝野先生",
-  "近藤先生",
-  "小林(大)先生",
-  "佐藤先生",
-  "高田先生",
-  "千脇先生",
-  "戸塚先生",
-  "長谷田先生",
-  "濱田先生",
-  "播磨先生",
-  "東田先生",
-  "平岡先生",
-  "廣岡先生",
-  "福田先生",
-  "正井先生",
-  "宮岡先生",
-  "村中先生",
-  "森元先生",
-  "山口先生",
-  "山田(竜)先生",
-  "安永先生",
-  "吉本先生",
+// 1. 先生と教科のデータベース
+const teacherData = [
+  { name: "相田先生", subject: "保体" },
+  { name: "安藤先生", subject: "数学" },
+  { name: "井田先生", subject: "保体" },
+  { name: "梅津先生", subject: "生物" },
+  { name: "太田先生", subject: "国語" },
+  { name: "岡本先生", subject: "英語" },
+  { name: "奥田先生", subject: "物理" },
+  { name: "尾上先生", subject: "保体" },
+  { name: "勝野先生", subject: "物理" },
+  { name: "近藤先生", subject: "英語" },
+  { name: "小林(大)先生", subject: "歴史" },
+  { name: "佐藤先生", subject: "地理" },
+  { name: "高田先生", subject: "化学" },
+  { name: "千脇先生", subject: "生物" },
+  { name: "戸塚先生", subject: "化学" },
+  { name: "長谷田先生", subject: "保体" },
+  { name: "濱田先生", subject: "数学" },
+  { name: "播磨先生", subject: "物理" },
+  { name: "東田先生", subject: "化学" },
+  { name: "平岡先生", subject: "数学" },
+  { name: "廣岡先生", subject: "物理" },
+  { name: "福田先生", subject: "古典" },
+  { name: "正井先生", subject: "情報" },
+  { name: "宮岡先生", subject: "英語" },
+  { name: "村中先生", subject: "古典" },
+  { name: "森元先生", subject: "家庭" },
+  { name: "山口先生", subject: "化学" },
+  { name: "山田(竜)先生", subject: "数学" },
+  { name: "安永先生", subject: "英語" },
+  { name: "吉本先生", subject: "保体" },
 ];
 
+// 名前だけの配列（スプシ送信時に使用）
+const teacherList = teacherData.map((t) => t.name);
+
 const TOTAL_POINTS = 10;
-// 各先生のポイントを配列で管理（初期値0を30人分）
-let currentPointsAllocation = new Array(teacherList.length).fill(0);
+let currentPointsAllocation = new Array(teacherData.length).fill(0);
 let currentTotal = 0;
 
 const voteContainer = document.getElementById("vote-container");
@@ -42,14 +44,17 @@ const remainingDisplay = document.getElementById("remaining-points");
 const submitBtn = document.getElementById("submit-btn");
 const statusDisplay = document.getElementById("status-message");
 
+// 2. 画面の初期化（教科ラベル付き）
 function init() {
-  teacherList.forEach((name, index) => {
+  teacherData.forEach((teacher, index) => {
     const card = document.createElement("div");
     card.className = "teacher-card";
-    // ボタンの引数を index (0, 1, 2...) に変更
     card.innerHTML = `
             <div class="teacher-info">
-                <span class="teacher-name">${name}</span>
+                <div class="name-row">
+                    <span class="teacher-name">${teacher.name}</span>
+                    <span class="teacher-subject">${teacher.subject}</span>
+                </div>
                 <div class="bar-background">
                     <div class="bar-fill" id="bar-fill-${index}" style="width: 0%"></div>
                 </div>
@@ -65,9 +70,9 @@ function init() {
   updateUI();
 }
 
+// 3. ポイント調整ロジック（インデックス管理）
 function adjustPoints(index, amount) {
   let newAllocation = currentPointsAllocation[index] + amount;
-
   if (newAllocation < 0) return;
   if (amount > 0 && currentTotal >= TOTAL_POINTS) return;
 
@@ -75,6 +80,7 @@ function adjustPoints(index, amount) {
   updateUI();
 }
 
+// 4. UI更新（バーとボタンの制御）
 function updateUI() {
   currentTotal = currentPointsAllocation.reduce((a, b) => a + b, 0);
 
@@ -100,11 +106,11 @@ function updateUI() {
   }
 }
 
+// 5. 送信処理（ここに自分のURLを貼る）
 function submitVote() {
   const url =
-    "https://script.google.com/macros/s/AKfycbw6NRLle2i3kczVoP0VUoIUoGD2qcuyz57Npvrio9o6u8Rz5uuV3IGC155eGQYhWP8f/exec";
+    "https://script.google.com/macros/s/AKfycbyZ9xd-LAjU00_iNCSpd6ak7v0vXEkerKV2ngTRp_o8gl4DkJeSbp1JSw4uGSBWUzYL/exec";
 
-  // 送信用データを作成（{ "相田先生": 2, ... } の形式に戻す）
   const postData = {};
   teacherList.forEach((name, index) => {
     postData[name] = currentPointsAllocation[index];
@@ -124,12 +130,13 @@ function submitVote() {
       updateUI();
     })
     .catch((err) => {
-      alert("エラーが発生しました");
+      alert("エラーが発生しました。通信環境を確認してください。");
       submitBtn.disabled = false;
       submitBtn.textContent = "投票する";
     });
 }
 
+// 6. 完了演出
 function showSuccessAnimation() {
   const overlay = document.createElement("div");
   overlay.className = "success-overlay";
@@ -137,7 +144,7 @@ function showSuccessAnimation() {
         <div class="success-content">
             <div class="success-icon">✨</div>
             <h2>投票完了！</h2>
-            <p>ご協力ありがとうございました！</p>
+            <p>ご協力ありがとうございました！<br>結果発表をお楽しみに！</p>
             <button onclick="location.reload()" class="close-btn">戻る</button>
         </div>
     `;
