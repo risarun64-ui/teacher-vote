@@ -276,3 +276,23 @@ h1 {
     transform: translateY(-20px);
   }
 }
+/* 名前と教科を横並びにする設定 */
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.teacher-subject {
+  font-size: 0.75rem;
+  background-color: #e8eaf6; /* 薄い青 */
+  color: var(--primary-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: normal;
+}
